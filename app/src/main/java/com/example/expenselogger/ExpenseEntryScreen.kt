@@ -115,8 +115,8 @@ fun TextFields(
         OutlinedTextField(
             value = expenseEntry,
             onValueChange = { onExpenseEntryChange(it) },
-            placeholder = { Text("Enter category", color = lightWhiteShade.copy(alpha = 0.5f)) },
-            textStyle = TextStyle(color = lightWhiteShade, fontSize = 18.sp),
+            placeholder = { Text("Enter category", color = lightWhiteShade.copy(alpha = 0.5f), fontFamily = poppinsFontFamily) },
+            textStyle = TextStyle(color = lightWhiteShade, fontSize = 18.sp, fontFamily = poppinsFontFamily),
             modifier = Modifier.height(56.dp)
         )
 
@@ -127,9 +127,11 @@ fun TextFields(
         OutlinedTextField(
             value = amount,
             onValueChange = { onAmountChange(it) },
-            placeholder = { Text("Enter Amount", color = lightWhiteShade.copy(alpha = 0.5f)) },
-            textStyle = TextStyle(color = Color.White),
+            placeholder = { Text("Enter category", color = lightWhiteShade.copy(alpha = 0.5f), fontFamily = poppinsFontFamily) },
+            textStyle = TextStyle(color = lightWhiteShade, fontSize = 18.sp, fontFamily = poppinsFontFamily),
             modifier = Modifier.height(56.dp)
         )
     }
 }
+
+
