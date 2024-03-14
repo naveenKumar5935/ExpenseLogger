@@ -25,12 +25,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.expenselogger.room.Expense
 import com.example.expenselogger.ui.theme.buttonColor
 import com.example.expenselogger.ui.theme.lightWhiteShade
 import com.example.expenselogger.ui.theme.poppinsFontFamily
 
 @Composable
-fun ShowExpenseCard(category: String, amount:String, deleteItem:()->Unit) {
+fun ShowExpenseCard(expense: Expense, deleteItem:()->Unit) {
     Card(
         modifier = Modifier.padding(8.dp),
         shape = RoundedCornerShape(8.dp),
@@ -46,13 +47,13 @@ fun ShowExpenseCard(category: String, amount:String, deleteItem:()->Unit) {
             Column(
 
             ) {
-                Text(text = category,
+                Text(text = expense.category,
                     color = lightWhiteShade,
                     fontFamily = poppinsFontFamily,
                     fontWeight = FontWeight(600),
                     fontSize = 18.sp)
 
-                Text(text = amount,
+                Text(text = "$${expense.amount}",
                     color = lightWhiteShade,
                     fontFamily = poppinsFontFamily,
                     fontWeight = FontWeight.SemiBold,

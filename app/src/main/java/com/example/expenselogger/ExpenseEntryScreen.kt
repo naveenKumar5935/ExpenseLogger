@@ -1,6 +1,7 @@
 package com.example.expenselogger
 
 import android.annotation.SuppressLint
+import android.provider.Settings.Global
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,18 +32,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.expenselogger.room.Expense
+import com.example.expenselogger.room.ExpenseDatabase
 import com.example.expenselogger.ui.theme.DarkBlackColor
 import com.example.expenselogger.ui.theme.buttonColor
 import com.example.expenselogger.ui.theme.lightWhiteShade
 import com.example.expenselogger.ui.theme.poppinsFontFamily
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
 
 @SuppressLint("MutableCollectionMutableState")
-@Preview
 @Composable
-fun ExpenseEntryScreen() {
-    var expenseList by remember{ mutableStateOf(expenseDataList) }
+fun ExpenseEntryScreen(database: ExpenseDatabase) {
+
     var categoryEntry by remember { mutableStateOf("") }
     var amount by remember { mutableStateOf("") }
+
+    // Observe expenses from the database
+    val expenseDB by database.expenseDao().getAllExpenses().collectAsState(initial = emptyList())
 
     Column(
         modifier = Modifier
@@ -75,25 +86,34 @@ fun ExpenseEntryScreen() {
 
         Button(
             onClick = {
-               expenseList.add(Expenses(categoryEntry,amount))
+                GlobalScope.launch {
+                    database.expenseDao().insertExpense(
+                        Expense(categoryEntry,"$$amount")
+                    )
+                }
             },
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(buttonColor),
             modifier = Modifier.fillMaxWidth(0.8f)
         ) {
             Text(
-                text = "Submit",
+                text = "Add Expense",
                 fontFamily = poppinsFontFamily,
                 fontWeight = FontWeight.Medium,
-                fontSize = 16.sp
+                fontSize = 16.sp,
+                color = lightWhiteShade
             )
         }
 
+
+
         LazyColumn {
 
-                items(expenseList){
-                    ShowExpenseCard(category = it.category, amount = it.amount) {
-                        expenseList.remove(it)
+                items(expenseDB){expense ->
+                    ShowExpenseCard(expense) {
+                        GlobalScope.launch {
+                            database.expenseDao().deleteExpenseById(expense.id)
+                        }
                     }
                 }
 
@@ -133,5 +153,6 @@ fun TextFields(
         )
     }
 }
+
 
 

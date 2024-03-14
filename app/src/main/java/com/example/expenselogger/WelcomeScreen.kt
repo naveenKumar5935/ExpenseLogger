@@ -64,7 +64,8 @@ fun WelcomeScreen(goToExpenseScreen: ()->Unit) {
             Text(text = "Get Started",
                 fontFamily = poppinsFontFamily,
                 fontWeight = FontWeight.Medium,
-                fontSize = 16.sp
+                fontSize = 16.sp,
+                color = lightWhiteShade
             )
         }
 
