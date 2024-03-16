@@ -53,7 +53,7 @@ fun ShowExpenseCard(expense: Expense, deleteItem:()->Unit) {
                     fontWeight = FontWeight(600),
                     fontSize = 18.sp)
 
-                Text(text = "$${expense.amount}",
+                Text(text = expense.amount,
                     color = lightWhiteShade,
                     fontFamily = poppinsFontFamily,
                     fontWeight = FontWeight.SemiBold,

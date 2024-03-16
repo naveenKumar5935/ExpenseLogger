@@ -11,6 +11,7 @@
     import androidx.compose.foundation.layout.fillMaxSize
     import androidx.compose.foundation.layout.fillMaxWidth
     import androidx.compose.foundation.layout.height
+    import androidx.compose.foundation.layout.padding
     import androidx.compose.foundation.lazy.LazyColumn
     import androidx.compose.foundation.lazy.items
     import androidx.compose.foundation.shape.RoundedCornerShape
@@ -44,6 +45,7 @@
     import kotlinx.coroutines.flow.collect
     import kotlinx.coroutines.flow.toList
     import kotlinx.coroutines.launch
+    import java.time.LocalDate
 
     @SuppressLint("MutableCollectionMutableState")
     @Composable
@@ -96,7 +98,7 @@
                     }else{
                         GlobalScope.launch {
                             database.expenseDao().insertExpense(
-                                Expense(categoryEntry,"$$amount")
+                                Expense(categoryEntry,"$$amount",LocalDate.now().toString())
                             )
                         }
                     }
@@ -115,20 +117,32 @@
                 )
             }
 
+            val expensesByDate = expenseDB.groupBy { it.date }
 
 
             LazyColumn {
+            expensesByDate.forEach { (date, expenses) ->
 
-                    items(expenseDB){expense ->
-                        ShowExpenseCard(expense) {
-                            GlobalScope.launch {
-                                database.expenseDao().deleteExpenseById(expense.id)
+                    item {
+                        Text(
+                            text = date.toString(),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                            color = lightWhiteShade,
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+                    }
+                        items(expenses) { expense ->
+                            ShowExpenseCard(expense) {
+                                GlobalScope.launch {
+                                    database.expenseDao().deleteExpenseById(expense.id)
+                                }
                             }
                         }
                     }
 
+                }
 
-            }
         }
     }
 

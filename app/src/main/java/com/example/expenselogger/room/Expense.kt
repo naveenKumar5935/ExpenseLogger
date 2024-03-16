@@ -7,7 +7,8 @@ import androidx.room.PrimaryKey
 @Entity
 data class Expense(
     val category: String,
-    val amount:String){
+    val amount:String,
+val date: String){
     @PrimaryKey(autoGenerate = true)
     var id:Int=0
 }
