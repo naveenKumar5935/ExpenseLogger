@@ -26,5 +26,7 @@ Technologies Used
 
 ## Screenshots
 
+<img src="https://github.com/naveenKumar5935/ExpenseLogger/assets/78121102/aedb33ad-372f-420e-ab66-f2e6a311b7d1" width="180" height="390">
 
+[expressLoggerApp.webm](https://github.com/naveenKumar5935/ExpenseLogger/assets/78121102/1f334768-53e6-49ca-9484-742f34e8214b)
 
