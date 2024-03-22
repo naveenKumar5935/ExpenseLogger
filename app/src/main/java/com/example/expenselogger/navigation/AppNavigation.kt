@@ -1,4 +1,4 @@
-package com.example.expenselogger
+package com.example.expenselogger.navigation
 
 
 import androidx.compose.runtime.Composable
@@ -9,6 +9,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.expenselogger.screens.ExpenseEntryScreen
+import com.example.expenselogger.screens.WelcomeScreen
 import com.example.expenselogger.room.ExpenseDatabase
 import com.example.expenselogger.sharedpref.PreferenceManager
 

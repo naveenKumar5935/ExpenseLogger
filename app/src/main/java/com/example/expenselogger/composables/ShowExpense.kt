@@ -1,4 +1,4 @@
-package com.example.expenselogger
+package com.example.expenselogger.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

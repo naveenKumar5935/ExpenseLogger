@@ -1,7 +1,6 @@
-    package com.example.expenselogger
+    package com.example.expenselogger.screens
 
     import android.annotation.SuppressLint
-    import android.provider.Settings.Global
     import android.widget.Toast
     import androidx.compose.foundation.background
     import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +19,6 @@
     import androidx.compose.material3.OutlinedTextField
     import androidx.compose.material3.Text
     import androidx.compose.runtime.Composable
-    import androidx.compose.runtime.LaunchedEffect
     import androidx.compose.runtime.collectAsState
     import androidx.compose.runtime.getValue
     import androidx.compose.runtime.mutableStateOf
@@ -28,22 +26,21 @@
     import androidx.compose.runtime.setValue
     import androidx.compose.ui.Alignment
     import androidx.compose.ui.Modifier
-    import androidx.compose.ui.graphics.Color
     import androidx.compose.ui.platform.LocalContext
     import androidx.compose.ui.text.TextStyle
     import androidx.compose.ui.text.font.FontWeight
-    import androidx.compose.ui.tooling.preview.Preview
     import androidx.compose.ui.unit.dp
     import androidx.compose.ui.unit.sp
+    import com.example.expenselogger.composables.ShowExpenseCard
     import com.example.expenselogger.room.Expense
     import com.example.expenselogger.room.ExpenseDatabase
     import com.example.expenselogger.ui.theme.DarkBlackColor
     import com.example.expenselogger.ui.theme.buttonColor
     import com.example.expenselogger.ui.theme.lightWhiteShade
     import com.example.expenselogger.ui.theme.poppinsFontFamily
+    import kotlinx.coroutines.CoroutineScope
+    import kotlinx.coroutines.Dispatchers
     import kotlinx.coroutines.GlobalScope
-    import kotlinx.coroutines.flow.collect
-    import kotlinx.coroutines.flow.toList
     import kotlinx.coroutines.launch
     import java.time.LocalDate
 
@@ -65,6 +62,7 @@
                 .background(DarkBlackColor),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp)
+
         ) {
             Box(
                 modifier = Modifier
@@ -96,7 +94,7 @@
                     if(categoryEntry.isEmpty() || amount.isEmpty()){
                         Toast.makeText(context,"Fields cannot be empty",Toast.LENGTH_SHORT).show()
                     }else{
-                        GlobalScope.launch {
+                        CoroutineScope(Dispatchers.IO).launch {
                             database.expenseDao().insertExpense(
                                 Expense(categoryEntry,"$$amount",LocalDate.now().toString())
                             )
@@ -126,6 +124,7 @@
                     item {
                         Text(
                             text = date.toString(),
+                            fontFamily = poppinsFontFamily,
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp,
                             color = lightWhiteShade,
@@ -134,7 +133,7 @@
                     }
                         items(expenses) { expense ->
                             ShowExpenseCard(expense) {
-                                GlobalScope.launch {
+                                CoroutineScope(Dispatchers.IO).launch {
                                     database.expenseDao().deleteExpenseById(expense.id)
                                 }
                             }
